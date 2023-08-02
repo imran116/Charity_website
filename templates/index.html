@@ -22,27 +22,32 @@
             <div class="collapse navbar-collapse" id="navbarNav">
 
                 <ul class="navbar-nav ms-auto">
-                {% for menu in menus %}
+
+
                     <li class="nav-item">
-                        <a class="nav-link click-scroll" href="{{ menus_get_section_id }}">{{ menu.menu_name }}</a>
+                        <a class="nav-link click-scroll" href="/">Home</a>
+                        {% for menu in menus %}
+                        <a class="nav-link click-scroll" href="#{{ menu.id_or_href }}">{{ menu.menu_name }}</a>
+                         {% endfor menus %}
+                    </li>
+
+                    {% for submenu in submenus %}
+                    {% if submenu.get_submenu %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link click-scroll dropdown-toggle" href="#{{ submenu.id_or_href }}"
+                            id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">{{ submenu.menu_name }}</a>
+
+
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                    {% for submenu in submenu.get_submenu %}
+                              <li><a class="dropdown-item" href="{{ submenu.id_or_href }}">{{ submenu.sub_menu_name }}</a></li>
+                              {% endfor %}
+                        </ul>
 
                     </li>
-               {% endfor menus %}
-
-{#                    {% for submenu in menu. %}#}
-{#                    <li class="nav-item dropdown">#}
-{#                        <a class="nav-link click-scroll dropdown-toggle" href="#section_5"#}
-{#                            id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown"#}
-{#                            aria-expanded="false">{{ submenu.su }}</a>#}
-{##}
-{#                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">#}
-{##}
-{#                              <li><a class="dropdown-item" href="{{ submenu.sub_menu_page_name }}">{{ submenu.sub_menu_name }}</a></li>#}
-{##}
-{#                        </ul>#}
-{##}
-{#                    </li>#}
-{#                    {% endfor %}#}
+                    {% endif %}
+                        {% endfor %}
 
                      <li class="nav-item ms-3">
                         <a class="nav-link custom-btn custom-border-btn btn" href="donate.html">Donate</a>
@@ -125,7 +130,8 @@
             </div>
         </section>
 
-        <section class="section-padding section-bg" id="">
+
+        <section class="section-padding section-bg" id="about">
             <div class="container">
                 <div class="row">
 
@@ -238,13 +244,13 @@
                 <div class="row justify-content-center align-items-center">
 
                     <div class="col-lg-5 col-12 ms-auto">
-                        <h2 class="mb-0">Make an impact. <br> Save lives.</h2>
+                        <h2 class="mb-0">{{ abouts.quote }}</h2>
                     </div>
 
                     <div class="col-lg-5 col-12">
-                        <a href="#" class="me-4">Make a donation</a>
+                        <a href="donate.html" class="me-4">Make a donation</a>
 
-                        <a href="#section_4" class="custom-btn btn smoothscroll">Become a volunteer</a>
+                        <a href="#volunteer" class="custom-btn btn smoothscroll">Become a volunteer</a>
                     </div>
 
                 </div>
@@ -252,7 +258,7 @@
         </section>
 
 
-        <section class="section-padding" id="{{ menus_get_section_id.section_id }}">
+        <section class="section-padding" id="causes">
             <div class="container">
                 <div class="row">
 
@@ -260,31 +266,41 @@
                         <h2>Our Causes</h2>
                     </div>
 
+                    {% for cause in causes %}
                     <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
                         <div class="custom-block-wrap">
-                            <img src="images/causes/group-african-kids-paying-attention-class.jpg"
+                            <img src="{{ cause.image.url }}"
                                 class="custom-block-image img-fluid" alt="">
 
                             <div class="custom-block">
                                 <div class="custom-block-body">
-                                    <h5 class="mb-3">Children Education</h5>
+                                    <h5 class="mb-3">{{ cause.title }}</h5>
 
-                                    <p>Lorem Ipsum dolor sit amet, consectetur adipsicing kengan omeg kohm tokito</p>
+                                    <p>{{ cause.description }}</p>
 
-                                    <div class="progress mt-4">
-                                        <div class="progress-bar w-75" role="progressbar" aria-valuenow="75"
-                                            aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+
+                        <div class="progress mt-4">
+                           <div class="progress-bar" role="progressbar"
+                               style="width: {{ cause.raised_amount_percentage }}%;"
+                               aria-valuenow="{{ cause.raised_amount_percentage }}"
+                               aria-valuemin="0" aria-valuemax="100">
+                           </div>
+                        </div>
+{#                                    <div class="progress mt-4">#}
+{#                                        <div class="progress-bar w-50" role="progressbar" aria-valuenow="50"#}
+{#                                            aria-valuemin="0" aria-valuemax="100"></div>#}
+{#                                    </div>#}
+
 
                                     <div class="d-flex align-items-center my-2">
                                         <p class="mb-0">
                                             <strong>Raised:</strong>
-                                            $18,500
+                                            ${{ cause.raised_amount }}
                                         </p>
 
                                         <p class="ms-auto mb-0">
                                             <strong>Goal:</strong>
-                                            $32,000
+                                            ${{ cause.goal_amount }}
                                         </p>
                                     </div>
                                 </div>
@@ -293,143 +309,80 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
-                        <div class="custom-block-wrap">
-                            <img src="images/causes/poor-child-landfill-looks-forward-with-hope.jpg"
-                                class="custom-block-image img-fluid" alt="">
-
-                            <div class="custom-block">
-                                <div class="custom-block-body">
-                                    <h5 class="mb-3">Poverty Development</h5>
-
-                                    <p>Sed leo nisl, posuere at molestie ac, suscipit auctor mauris. Etiam quis metus
-                                        tempor</p>
-
-                                    <div class="progress mt-4">
-                                        <div class="progress-bar w-50" role="progressbar" aria-valuenow="50"
-                                            aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-
-                                    <div class="d-flex align-items-center my-2">
-                                        <p class="mb-0">
-                                            <strong>Raised:</strong>
-                                            $27,600
-                                        </p>
-
-                                        <p class="ms-auto mb-0">
-                                            <strong>Goal:</strong>
-                                            $60,000
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <a href="donate.html" class="custom-btn btn">Donate now</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <div class="custom-block-wrap">
-                            <img src="images/causes/african-woman-pouring-water-recipient-outdoors.jpg"
-                                class="custom-block-image img-fluid" alt="">
-
-                            <div class="custom-block">
-                                <div class="custom-block-body">
-                                    <h5 class="mb-3">Supply drinking water</h5>
-
-                                    <p>Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-                                    </p>
-
-                                    <div class="progress mt-4">
-                                        <div class="progress-bar w-100" role="progressbar" aria-valuenow="100"
-                                            aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-
-                                    <div class="d-flex align-items-center my-2">
-                                        <p class="mb-0">
-                                            <strong>Raised:</strong>
-                                            $84,600
-                                        </p>
-
-                                        <p class="ms-auto mb-0">
-                                            <strong>Goal:</strong>
-                                            $100,000
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <a href="donate.html" class="custom-btn btn">Donate now</a>
-                            </div>
-                        </div>
-                    </div>
-
+                    {% endfor %}
                 </div>
             </div>
         </section>
 
-        <section class="volunteer-section section-padding" id="section_4">
+
+        <section class="volunteer-section section-padding" id="volunteer">
             <div class="container">
                 <div class="row">
 
                     <div class="col-lg-6 col-12">
                         <h2 class="text-white mb-4">Volunteer</h2>
 
-                        <form class="custom-form volunteer-form mb-5 mb-lg-0" action="#" method="post" role="form">
+                        <form class="custom-form volunteer-form mb-5 mb-lg-0" action="{% url 'volunteer' %}" method="post" role="form" enctype="multipart/form-data">
+                            {% csrf_token %}
                             <h3 class="mb-4">Become a volunteer today</h3>
 
                             <div class="row">
                                 <div class="col-lg-6 col-12">
-                                    <input type="text" name="volunteer-name" id="volunteer-name" class="form-control"
+                                    <input type="text" name="volunteer_name" id="volunteer_name" class="form-control"
                                         placeholder="Jack Doe" required>
                                 </div>
 
                                 <div class="col-lg-6 col-12">
-                                    <input type="email" name="volunteer-email" id="volunteer-email"
+                                    <input type="email" name="volunteer_email" id="volunteer_email"
                                         pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Jackdoe@gmail.com"
                                         required>
                                 </div>
 
                                 <div class="col-lg-6 col-12">
-                                    <input type="text" name="volunteer-subject" id="volunteer-subject"
+                                    <input type="text" name="volunteer_subject" id="volunteer_subject"
                                         class="form-control" placeholder="Subject" required>
                                 </div>
 
                                 <div class="col-lg-6 col-12">
                                     <div class="input-group input-group-file">
-                                        <input type="file" class="form-control" id="inputGroupFile02">
+                                        <input type="file" class="form-control" id="volunteer_file" name="volunteer_file">
 
-                                        <label class="input-group-text" for="inputGroupFile02">Upload your CV</label>
+                                        <label class="input-group-text" for="volunteer_file">Upload your CV</label>
 
                                         <i class="bi-cloud-arrow-up ms-auto"></i>
                                     </div>
                                 </div>
                             </div>
 
-                            <textarea name="volunteer-message" rows="3" class="form-control" id="volunteer-message"
+                            <textarea name="volunteer_message" rows="3" class="form-control" id="volunteer_message"
                                 placeholder="Comment (Optional)"></textarea>
 
                             <button type="submit" class="form-control">Submit</button>
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
                         </form>
                     </div>
-
+                    {% for volunteer_member in volunteer_members %}
                     <div class="col-lg-6 col-12">
-                        <img src="images/smiling-casual-woman-dressed-volunteer-t-shirt-with-badge.jpg"
+                        <img src="{{ volunteer_member.image.url }}"
                             class="volunteer-image img-fluid" alt="">
 
                         <div class="custom-block-body text-center">
-                            <h4 class="text-white mt-lg-3 mb-lg-3">About Volunteering</h4>
-
-                            <p class="text-white">Lorem Ipsum dolor sit amet, consectetur adipsicing kengan omeg kohm
-                                tokito Professional charity theme based</p>
+                            <h4 class="text-white mt-lg-3 mb-lg-3">{{ volunteer_member.name }}</h4>
++
+                            <p class="text-white">{{ volunteer_member.about }}</p>
                         </div>
                     </div>
+                    {% endfor %}
+
+
 
                 </div>
             </div>
         </section>
 
-        <section class="news-section section-padding" id="section_5">
+        <section class="news-section section-padding" id="news">
             <div class="container">
                 <div class="row">
 
@@ -438,21 +391,20 @@
                     </div>
 
                     <div class="col-lg-7 col-12">
+                        {% for news in add_news %}
                         <div class="news-block">
                             <div class="news-block-top">
                                 <a href="news-detail.html">
-                                    <img src="images/news/medium-shot-volunteers-with-clothing-donations.jpg"
+                                    <img src="{{ news.image_1.url }}"
                                         class="news-image img-fluid" alt="">
                                 </a>
 
                                 <div class="news-category-block">
+                                    {% for tag in news.tags.all %}
                                     <a href="#" class="category-block-link">
-                                        Lifestyle,
+                                        {{ tag }}
                                     </a>
-
-                                    <a href="#" class="category-block-link">
-                                        Clothing Donation
-                                    </a>
+                                    {% endfor %}
                                 </div>
                             </div>
 
@@ -461,14 +413,14 @@
                                     <div class="news-block-date">
                                         <p>
                                             <i class="bi-calendar4 custom-icon me-1"></i>
-                                            October 12, 2036
+                                            {{ news.datetime }}
                                         </p>
                                     </div>
 
                                     <div class="news-block-author mx-5">
                                         <p>
                                             <i class="bi-person custom-icon me-1"></i>
-                                            By Admin
+                                            {{ news.news_author_name }}
                                         </p>
                                     </div>
 
@@ -481,74 +433,16 @@
                                 </div>
 
                                 <div class="news-block-title mb-2">
-                                    <h4><a href="news-detail.html" class="news-block-title-link">Clothing donation to
-                                            urban area</a></h4>
+                                    <h4><a href="news-detail.html" class="news-block-title-link">{{ news.news_title }}</a></h4>
                                 </div>
 
                                 <div class="news-block-body">
-                                    <p>Lorem Ipsum dolor sit amet, consectetur adipsicing kengan omeg kohm tokito
-                                        Professional charity theme based on Bootstrap</p>
+                                    <p>{{ news.get_short_desc }}</p>
                                 </div>
                             </div>
                         </div>
+                        {% endfor %}
 
-                        <div class="news-block mt-3">
-                            <div class="news-block-top">
-                                <a href="news-detail.html">
-                                    <img src="images/news/medium-shot-people-collecting-foodstuff.jpg"
-                                        class="news-image img-fluid" alt="">
-                                </a>
-
-                                <div class="news-category-block">
-                                    <a href="#" class="category-block-link">
-                                        Food,
-                                    </a>
-
-                                    <a href="#" class="category-block-link">
-                                        Donation,
-                                    </a>
-
-                                    <a href="#" class="category-block-link">
-                                        Caring
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="news-block-info">
-                                <div class="d-flex mt-2">
-                                    <div class="news-block-date">
-                                        <p>
-                                            <i class="bi-calendar4 custom-icon me-1"></i>
-                                            October 20, 2036
-                                        </p>
-                                    </div>
-
-                                    <div class="news-block-author mx-5">
-                                        <p>
-                                            <i class="bi-person custom-icon me-1"></i>
-                                            By Admin
-                                        </p>
-                                    </div>
-
-                                    <div class="news-block-comment">
-                                        <p>
-                                            <i class="bi-chat-left custom-icon me-1"></i>
-                                            35 Comments
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="news-block-title mb-2">
-                                    <h4><a href="news-detail.html" class="news-block-title-link">Food donation area</a>
-                                    </h4>
-                                </div>
-
-                                <div class="news-block-body">
-                                    <p>Sed leo nisl, posuere at molestie ac, suscipit auctor mauris. Etiam quis metus
-                                        elementum, tempor risus vel, condimentum orci</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="col-lg-4 col-12 mx-auto">
@@ -562,111 +456,58 @@
 
                         <h5 class="mt-5 mb-3">Recent news</h5>
 
+
+
+                           {% for recent_news in add_news %}
+                               {% if recent_news.get_recent_news %}
                         <div class="news-block news-block-two-col d-flex mt-4">
                             <div class="news-block-two-col-image-wrap">
                                 <a href="news-detail.html">
-                                    <img src="images/news/africa-humanitarian-aid-doctor.jpg"
+                                    <img src="{{ recent_news.image_1.url }}"
                                         class="news-image img-fluid" alt="">
                                 </a>
                             </div>
 
                             <div class="news-block-two-col-info">
                                 <div class="news-block-title mb-2">
-                                    <h6><a href="news-detail.html" class="news-block-title-link">Food donation area</a>
+                                    <h6><a href="news-detail.html" class="news-block-title-link">{{ recent_news.news_title }}</a>
                                     </h6>
                                 </div>
 
                                 <div class="news-block-date">
                                     <p>
                                         <i class="bi-calendar4 custom-icon me-1"></i>
-                                        October 16, 2036
+                                        {{ recent_news.datetime }}
                                     </p>
                                 </div>
                             </div>
                         </div>
+                               {% endif %}
+                           {% endfor %}
 
-                        <div class="news-block news-block-two-col d-flex mt-4">
-                            <div class="news-block-two-col-image-wrap">
-                                <a href="news-detail.html">
-                                    <img src="images/news/close-up-happy-people-working-together.jpg"
-                                        class="news-image img-fluid" alt="">
-                                </a>
-                            </div>
-
-                            <div class="news-block-two-col-info">
-                                <div class="news-block-title mb-2">
-                                    <h6><a href="news-detail.html" class="news-block-title-link">Volunteering Clean</a>
-                                    </h6>
-                                </div>
-
-                                <div class="news-block-date">
-                                    <p>
-                                        <i class="bi-calendar4 custom-icon me-1"></i>
-                                        October 24, 2036
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="category-block d-flex flex-column">
                             <h5 class="mb-3">Categories</h5>
 
+                            {% for countt in news_category %}
                             <a href="#" class="category-block-link">
-                                Drinking water
-                                <span class="badge">20</span>
+                                {{ countt.category_name }}
+                                <span class="badge">{{ countt.category_name }}</span>
                             </a>
+                            {% endfor %}
 
-                            <a href="#" class="category-block-link">
-                                Food Donation
-                                <span class="badge">30</span>
-                            </a>
 
-                            <a href="#" class="category-block-link">
-                                Children Education
-                                <span class="badge">10</span>
-                            </a>
 
-                            <a href="#" class="category-block-link">
-                                Poverty Development
-                                <span class="badge">15</span>
-                            </a>
-
-                            <a href="#" class="category-block-link">
-                                Clothing Donation
-                                <span class="badge">20</span>
-                            </a>
                         </div>
 
                         <div class="tags-block">
                             <h5 class="mb-3">Tags</h5>
-
+                              {% for tags in news_tags %}
                             <a href="#" class="tags-block-link">
-                                Donation
+                                {{ tags.tag_name }}
                             </a>
+                              {% endfor %}
 
-                            <a href="#" class="tags-block-link">
-                                Clothing
-                            </a>
-
-                            <a href="#" class="tags-block-link">
-                                Food
-                            </a>
-
-                            <a href="#" class="tags-block-link">
-                                Children
-                            </a>
-
-                            <a href="#" class="tags-block-link">
-                                Education
-                            </a>
-
-                            <a href="#" class="tags-block-link">
-                                Poverty
-                            </a>
-
-                            <a href="#" class="tags-block-link">
-                                Clean Water
-                            </a>
                         </div>
 
                         <form class="custom-form subscribe-form" action="#" method="post" role="form">
@@ -767,7 +608,7 @@
         </section>
 
 
-        <section class="contact-section section-padding" id="section_6">
+        <section class="contact-section section-padding" id="contact">
             <div class="container">
                 <div class="row">
 
@@ -846,6 +687,7 @@
                 </div>
             </div>
         </section>
+
     </main>
 {# main section end  #}
     {% include 'footer.html' %}
