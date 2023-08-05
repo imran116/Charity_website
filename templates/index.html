@@ -7,7 +7,7 @@
     <nav class="navbar navbar-expand-lg bg-light shadow-lg">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <img src="{% static 'images/logo.png' %}" class="logo img-fluid" alt="Kind Heart Charity">
+                <img src="{{ website_settings.navbar_logo.url }}" class="logo img-fluid" alt="Kind Heart Charity">
                 <span>
                     Kind Heart Charity
                     <small>Non-profit Organization</small>
@@ -50,7 +50,7 @@
                         {% endfor %}
 
                      <li class="nav-item ms-3">
-                        <a class="nav-link custom-btn custom-border-btn btn" href="donate.html">Donate</a>
+                        <a class="nav-link custom-btn custom-border-btn btn" href="{% url 'donation' %}">Donate</a>
                     </li>
                 </ul>
 
@@ -305,7 +305,7 @@
                                     </div>
                                 </div>
 
-                                <a href="donate.html" class="custom-btn btn">Donate now</a>
+                                <a href="{% url 'donation' %}" class="custom-btn btn">Donate now</a>
                             </div>
                         </div>
                     </div>
@@ -394,14 +394,14 @@
                         {% for news in add_news %}
                         <div class="news-block">
                             <div class="news-block-top">
-                                <a href="news-detail.html">
+                                <a href="{% url 'news-details' news.pk %}">
                                     <img src="{{ news.image_1.url }}"
                                         class="news-image img-fluid" alt="">
                                 </a>
 
                                 <div class="news-category-block">
                                     {% for tag in news.tags.all %}
-                                    <a href="#" class="category-block-link">
+                                    <a href="{% url 'news-list_tag' tag.pk %}" class="category-block-link">
                                         {{ tag }}
                                     </a>
                                     {% endfor %}
@@ -427,13 +427,13 @@
                                     <div class="news-block-comment">
                                         <p>
                                             <i class="bi-chat-left custom-icon me-1"></i>
-                                            32 Comments
+                                            {{ news.get_comment.count }}
                                         </p>
                                     </div>
                                 </div>
 
                                 <div class="news-block-title mb-2">
-                                    <h4><a href="news-detail.html" class="news-block-title-link">{{ news.news_title }}</a></h4>
+                                    <h4><a href="{% url 'news-details' news.pk %}" class="news-block-title-link">{{ news.news_title }}</a></h4>
                                 </div>
 
                                 <div class="news-block-body">
@@ -462,7 +462,7 @@
                                {% if recent_news.get_recent_news %}
                         <div class="news-block news-block-two-col d-flex mt-4">
                             <div class="news-block-two-col-image-wrap">
-                                <a href="news-detail.html">
+                                <a href="{% url 'news-details' recent_news.pk %}">
                                     <img src="{{ recent_news.image_1.url }}"
                                         class="news-image img-fluid" alt="">
                                 </a>
@@ -470,7 +470,7 @@
 
                             <div class="news-block-two-col-info">
                                 <div class="news-block-title mb-2">
-                                    <h6><a href="news-detail.html" class="news-block-title-link">{{ recent_news.news_title }}</a>
+                                    <h6><a href="{% url 'news-details' recent_news.pk %}" class="news-block-title-link">{{ recent_news.news_title }}</a>
                                     </h6>
                                 </div>
 
@@ -489,10 +489,10 @@
                         <div class="category-block d-flex flex-column">
                             <h5 class="mb-3">Categories</h5>
 
-                            {% for countt in news_category %}
-                            <a href="#" class="category-block-link">
-                                {{ countt.category_name }}
-                                <span class="badge">{{ countt.category_name }}</span>
+                            {% for category in news_category %}
+                            <a href="{% url 'news-list' category.pk %}" class="category-block-link">
+                                {{ category.category_name }}
+                                <span class="badge">{{ category.addnews_set.count }}</span>
                             </a>
                             {% endfor %}
 
@@ -503,23 +503,29 @@
                         <div class="tags-block">
                             <h5 class="mb-3">Tags</h5>
                               {% for tags in news_tags %}
-                            <a href="#" class="tags-block-link">
+                            <a href="{% url 'news-list_tag' tags.pk %}" class="tags-block-link">
                                 {{ tags.tag_name }}
                             </a>
                               {% endfor %}
 
                         </div>
 
-                        <form class="custom-form subscribe-form" action="#" method="post" role="form">
+
+                        <form class="custom-form subscribe-form" action="{% url 'news-letter' %}" method="post" role="form">
+                            {% csrf_token %}
                             <h5 class="mb-4">Newsletter Form</h5>
 
-                            <input type="email" name="subscribe-email" id="subscribe-email" pattern="[^ @]*@[^ @]*"
+                            <input type="email" name="news_letter_email" id="news_letter_email" pattern="[^ @]*@[^ @]*"
                                 class="form-control" placeholder="Email Address" required>
 
                             <div class="col-lg-12 col-12">
                                 <button type="submit" class="form-control">Subscribe</button>
+                                {% for message in messages %}
+                                    {{ message }}
+                                {% endfor %}
                             </div>
                         </form>
+
                     </div>
 
                 </div>
@@ -537,69 +543,27 @@
                         <div id="testimonial-carousel" class="carousel carousel-fade slide" data-bs-ride="carousel">
 
                             <div class="carousel-inner">
-                                <div class="carousel-item active">
+                            {% for happy_customer in happy_customers %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                     <div class="carousel-caption">
-                                        <h4 class="carousel-title">Lorem Ipsum dolor sit amet, consectetur adipsicing
-                                            kengan omeg kohm tokito charity theme</h4>
+                                        <h4 class="carousel-title">{{ happy_customer.customer_quote }}</h4>
 
-                                        <small class="carousel-name"><span class="carousel-name-title">Maria</span>,
-                                            Boss</small>
+                                        <small class="carousel-name"><span class="carousel-name-title"></span>{{ happy_customer.customer_name }}</small>
                                     </div>
                                 </div>
-
-                                <div class="carousel-item">
-                                    <div class="carousel-caption">
-                                        <h4 class="carousel-title">Sed leo nisl, posuere at molestie ac, suscipit auctor
-                                            mauris quis metus tempor orci</h4>
-
-                                        <small class="carousel-name"><span class="carousel-name-title">Thomas</span>,
-                                            Partner</small>
-                                    </div>
-                                </div>
-
-                                <div class="carousel-item">
-                                    <div class="carousel-caption">
-                                        <h4 class="carousel-title">Lorem Ipsum dolor sit amet, consectetur adipsicing
-                                            kengan omeg kohm tokito charity theme</h4>
-
-                                        <small class="carousel-name"><span class="carousel-name-title">Jane</span>,
-                                            Advisor</small>
-                                    </div>
-                                </div>
-
-                                <div class="carousel-item">
-                                    <div class="carousel-caption">
-                                        <h4 class="carousel-title">Sed leo nisl, posuere at molestie ac, suscipit auctor
-                                            mauris quis metus tempor orci</h4>
-
-                                        <small class="carousel-name"><span class="carousel-name-title">Bob</span>,
-                                            Entreprenuer</small>
-                                    </div>
-                                </div>
+                            {% endfor %}
 
                                 <ol class="carousel-indicators">
-                                    <li data-bs-target="#testimonial-carousel" data-bs-slide-to="0" class="active">
-                                        <img src="images/avatar/portrait-beautiful-young-woman-standing-grey-wall.jpg"
+                                {% for happy_customer in happy_customers %}
+                                    <li data-bs-target="#testimonial-carousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}>
+                                        <img src="{{ happy_customer.customer_image.url}}"
                                             class="img-fluid rounded-circle avatar-image" alt="avatar">
                                     </li>
-
-                                    <li data-bs-target="#testimonial-carousel" data-bs-slide-to="1" class="">
-                                        <img src="images/avatar/portrait-young-redhead-bearded-male.jpg"
-                                            class="img-fluid rounded-circle avatar-image" alt="avatar">
-                                    </li>
-
-                                    <li data-bs-target="#testimonial-carousel" data-bs-slide-to="2" class="">
-                                        <img src="images/avatar/pretty-blonde-woman-wearing-white-t-shirt.jpg"
-                                            class="img-fluid rounded-circle avatar-image" alt="avatar">
-                                    </li>
-
-                                    <li data-bs-target="#testimonial-carousel" data-bs-slide-to="3" class="">
-                                        <img src="images/avatar/studio-portrait-emotional-happy-funny.jpg"
-                                            class="img-fluid rounded-circle avatar-image" alt="avatar">
-                                    </li>
+                                    {% endfor %}
                                 </ol>
 
                             </div>
+
                         </div>
                     </div>
 
@@ -617,12 +581,12 @@
                             <h2>Get in touch</h2>
 
                             <div class="contact-image-wrap d-flex flex-wrap">
-                                <img src="images/avatar/pretty-blonde-woman-wearing-white-t-shirt.jpg"
+                                <img src="{{ get_in_touch.member_image.url }}"
                                     class="img-fluid avatar-image" alt="">
 
                                 <div class="d-flex flex-column justify-content-center ms-3">
-                                    <p class="mb-0">Clara Barton</p>
-                                    <p class="mb-0"><strong>HR & Office Manager</strong></p>
+                                    <p class="mb-0">{{ get_in_touch.member_name }}</p>
+                                    <p class="mb-0"><strong>{{ get_in_touch.member_position }}</strong></p>
                                 </div>
                             </div>
 
@@ -631,32 +595,32 @@
 
                                 <p class="d-flex mb-2">
                                     <i class="bi-geo-alt me-2"></i>
-                                    Akershusstranda 20, 0150 Oslo, Norway
+                                    {{ get_in_touch.member_address }}
                                 </p>
 
                                 <p class="d-flex mb-2">
                                     <i class="bi-telephone me-2"></i>
 
-                                    <a href="tel: 305-240-9671">
-                                        305-240-9671
+                                    <a href="">
+                                        {{ get_in_touch.member_mobile_no }}
                                     </a>
                                 </p>
 
                                 <p class="d-flex">
                                     <i class="bi-envelope me-2"></i>
 
-                                    <a href="mailto:info@yourgmail.com">
-                                        donate@charity.org
+                                    <a href="">
+                                        {{ get_in_touch.member_email }}
                                     </a>
                                 </p>
-
-                                <a href="#" class="custom-btn btn mt-3">Get Direction</a>
+                                <a href="" class="custom-btn btn mt-3">Get Direction</a>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-lg-5 col-12 mx-auto">
-                        <form class="custom-form contact-form" action="#" method="post" role="form">
+                        <form class="custom-form contact-form" action="{% url 'contact-form' %}" method="post" role="form">
+                            {% csrf_token %}
                             <h2>Contact form</h2>
 
                             <p class="mb-4">Or, you can just send an email:
@@ -664,12 +628,12 @@
                             </p>
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-12">
-                                    <input type="text" name="first-name" id="first-name" class="form-control"
+                                    <input type="text" name="first_name" id="first_name" class="form-control"
                                         placeholder="Jack" required>
                                 </div>
 
                                 <div class="col-lg-6 col-md-6 col-12">
-                                    <input type="text" name="last-name" id="last-name" class="form-control"
+                                    <input type="text" name="last_name" id="last_name" class="form-control"
                                         placeholder="Doe" required>
                                 </div>
                             </div>
@@ -681,6 +645,9 @@
                                 placeholder="What can we help you?"></textarea>
 
                             <button type="submit" class="form-control">Send Message</button>
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
                         </form>
                     </div>
 
@@ -691,6 +658,7 @@
     </main>
 {# main section end  #}
     {% include 'footer.html' %}
+
 
 {% endblock main-container %}
 

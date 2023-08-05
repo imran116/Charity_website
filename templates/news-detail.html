@@ -1,0 +1,368 @@
+{% load static %}
+{% include 'base.html' %}
+{% block main-container %}
+
+
+    {% include 'header.html' %}
+
+
+    <nav class="navbar navbar-expand-lg bg-light shadow-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{{ website_settings.navbar_logo.url }}" class="logo img-fluid" alt="Kind Heart Charity">
+                <span>
+                    Kind Heart Charity
+                    <small>Non-profit Organization</small>
+                </span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav ms-auto">
+
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="/">Home</a>
+                        {% for menu in menus %}
+                        <a class="nav-link click-scroll" href="{% url 'home' %}#{{ menu.id_or_href }}">{{ menu.menu_name }}</a>
+                         {% endfor menus %}
+                    </li>
+
+                    {% for submenu in submenus %}
+                    {% if submenu.get_submenu %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link click-scroll dropdown-toggle" href="#{{ submenu.id_or_href }}"
+                            id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">{{ submenu.menu_name }}</a>
+
+
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                    {% for submenu in submenu.get_submenu %}
+                              <li><a class="dropdown-item" href="{{ submenu.id_or_href }}">{{ submenu.sub_menu_name }}</a></li>
+                              {% endfor %}
+                        </ul>
+
+                    </li>
+                    {% endif %}
+                        {% endfor %}
+
+                     <li class="nav-item ms-3">
+                        <a class="nav-link custom-btn custom-border-btn btn" href="{% url 'donation' %}">Donate</a>
+                    </li>
+                </ul>
+
+
+            </div>
+        </div>
+    </nav>
+
+    <main>
+
+        <section class="news-detail-header-section text-center">
+            <div class="section-overlay"></div>
+
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-12 col-12">
+                        <h1 class="text-white">News Detail</h1>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="news-section section-padding">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-7 col-12">
+                        <div class="news-block">
+                            <div class="news-block-top">
+                                <img src="{{ newsObj.image_1.url }}"
+                                    class="news-image img-fluid" alt="">
+
+                                <div class="news-category-block">
+                                    {% for tag in newsObj.tags.all %}
+                                    <a href="{% url 'news-list_tag' tag.pk %}" class="category-block-link">
+                                        {{ tag }}
+                                    </a>
+                                    {% endfor %}
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="news-block-info">
+                                <div class="d-flex mt-2">
+                                    <div class="news-block-date">
+                                        <p>
+                                            <i class="bi-calendar4 custom-icon me-1"></i>
+                                            {{ newsObj.datetime }}
+                                        </p>
+                                    </div>
+
+                                    <div class="news-block-author mx-5">
+                                        <p>
+                                            <i class="bi-person custom-icon me-1"></i>
+                                            {{ newsObj.news_author_name }}
+                                        </p>
+                                    </div>
+
+                                    <div class="news-block-comment">
+                                        <p>
+                                            <i class="bi-chat-left custom-icon me-1"></i>
+                                            {{ newsObj.get_comment.count }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="news-block-title mb-2">
+                                    <h4>{{ newsObj.news_title }}</h4>
+                                </div>
+
+                                <div class="news-block-body">
+                                    <p>{{ newsObj.news_description }}</p>
+
+                                    <blockquote>{{ newsObj.news_quote }}</blockquote>
+                                </div>
+
+                                <div class="row mt-5 mb-4">
+                                    <div class="col-lg-6 col-12 mb-4 mb-lg-0">
+                                        <img src="{{ newsObj.image_2.url }}"
+                                            class="news-detail-image img-fluid" alt="">
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <img src="{{ newsObj.image_3.url }}"
+                                            class="news-detail-image img-fluid" alt="">
+                                    </div>
+                                </div>
+
+                                <p>{{ newsObj.get_last_desc }}</p>
+
+                                <div class="social-share border-top mt-5 py-4 d-flex flex-wrap align-items-center">
+                                    <div class="tags-block me-auto">
+                                        {% for tag in newsObj.tags.all %}
+                                        <a href="{% url 'news-list_tag' tag.pk %}" class="tags-block-link">
+                                            {{ tag }}
+                                        </a>
+                                        {% endfor %}
+                                    </div>
+
+{#
+                                    <div class="d-flex">
+                                        <a href="{{ website_settings.facebook_link }}" class="social-icon-link bi-facebook"></a>
+
+                                        <a href="{{ website_settings.twitter_link }}" class="social-icon-link bi-twitter"></a>
+
+{#
+                                    </div>
+                                </div>
+
+
+                               {% for commment in newsObj.get_comment %}
+                                <div class="author-comment d-flex mt-3 mb-4">
+{#                                    <img src="images/avatar/studio-portrait-emotional-happy-funny.jpg"#}
+{#                                        class="img-fluid avatar-image" alt="">#}
+
+                                    <div class="author-comment-info ms-3">
+                                        <h6 class="mb-1">{{ commment.user.username }}</h6>
+
+                                        <p class="mb-0">{{ commment.comment }}</p>
+
+                                        <div class="d-flex mt-2">
+                                            <a href="#" class="author-comment-link me-3">Like</a>
+
+                                            <a href="#" class="author-comment-link">Reply</a>
+                                        </div>
+                                    </div>
+                                </div>
+                               {% endfor %}
+
+
+{#                                <div class="author-comment d-flex ms-5 ps-3">#}
+{#                                    <img src="images/avatar/pretty-blonde-woman-wearing-white-t-shirt.jpg"#}
+{#                                        class="img-fluid avatar-image" alt="">#}
+{##}
+{#                                    <div class="author-comment-info ms-3">#}
+{#                                        <h6 class="mb-1">Daisy</h6>#}
+{##}
+{#                                        <p class="mb-0">Sed leo nisl, posuere at molestie ac, suscipit auctor mauris.#}
+{#                                            Etiam quis metus elementum, tempor risus vel, condimentum orci</p>#}
+{##}
+{#                                        <div class="d-flex mt-2">#}
+{#                                            <a href="#" class="author-comment-link me-3">Like</a>#}
+{##}
+{#                                            <a href="#" class="author-comment-link">Reply</a>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+
+                                 {% if request.user.is_authenticated %}
+                                <form class="custom-form comment-form mt-4" action="{% url 'comment' newsObj.pk %}" method="post" role="form">
+                                    {% csrf_token %}
+                                    <h6 class="mb-3">Write a comment</h6>
+
+                                    <textarea name="comment" rows="4" class="form-control" id="comment"
+                                        placeholder="Your comment here"></textarea>
+
+                                    <div class="col-lg-3 col-md-4 col-6 ms-auto">
+                                        <button type="submit" class="form-control">Comment</button>
+                                    </div>
+                                </form>
+                            {% else %}
+                                   <p>For Comment Here, Please<a href="{% url 'login' %}" style="text-decoration: none;color: #0a53be; font-weight: bold;margin-left: 5px" >Login</a></p>
+                               {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+{#seaarch start#}
+                    <div class="col-lg-4 col-12 mx-auto mt-4 mt-lg-0">
+                        <form class="custom-form search-form" action="#" method="post" role="form">
+                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+
+                            <button type="submit" class="form-control">
+                                <i class="bi-search"></i>
+                            </button>
+                        </form>
+
+                        <h5 class="mt-5 mb-3">Recent news</h5>
+                        {% for recentnews in newsObj.get_recent_news %}
+                        <div class="news-block news-block-two-col d-flex mt-4">
+                            <div class="news-block-two-col-image-wrap">
+                                <a href="{% url 'news-details' recentnews.pk %}">
+                                    <img src="{{ recentnews.image_1.url }}"
+                                        class="news-image img-fluid" alt="">
+                                </a>
+                            </div>
+
+                            <div class="news-block-two-col-info">
+                                <div class="news-block-title mb-2">
+                                    <h6><a href="{% url 'news-details' recentnews.pk %}" class="news-block-title-link">{{ recentnews.news_title }}</a>
+                                    </h6>
+                                </div>
+
+                                <div class="news-block-date">
+                                    <p>
+                                        <i class="bi-calendar4 custom-icon me-1"></i>
+                                        {{ recentnews.datetime }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                       {% endfor %}
+                        <div class="category-block d-flex flex-column">
+                            <h5 class="mb-3">Categories</h5>
+
+                           {% for category in news_category %}
+                            <a href="{% url 'news-list' category.pk %}" class="category-block-link">
+                                {{ category.category_name }}
+                                <span class="badge">{{ category.addnews_set.count }}</span>
+                            </a>
+                            {% endfor %}
+                        </div>
+
+                        <div class="tags-block">
+                            <h5 class="mb-3">Tags</h5>
+                            {% for tag in news_tags %}
+                            <a href="{% url 'news-list_tag' tag.pk %}" class="tags-block-link">
+                                {{ tag }}
+                            </a>
+                            {% endfor %}
+                        </div>
+
+                        <form class="custom-form subscribe-form" action="{% url 'news-letter' %}" method="post" role="form">
+                            {% csrf_token %}
+                            <h5 class="mb-4">Newsletter Form</h5>
+
+                            <input type="email" name="news_letter_email" id="news_letter_email" pattern="[^ @]*@[^ @]*"
+                                class="form-control" placeholder="Email Address" required>
+
+                            <div class="col-lg-12 col-12">
+                                <button type="submit" class="form-control">Subscribe</button>
+                            </div>
+                        </form>
+                    </div>
+{#search end#}
+                </div>
+            </div>
+        </section>
+
+        <section class="news-section section-padding section-bg">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-12 col-12 mb-4">
+                        <h2>Related news</h2>
+                    </div>
+
+                     {% for relatednews in newsObj.get_related_news %}
+                    <div class="col-lg-6 col-12">
+                        <div class="news-block">
+                            <div class="news-block-top">
+                                <a href="{% url 'news-details' relatednews.pk %}">
+                                    <img src="{{ relatednews.image_1.url }}"
+                                        class="news-image img-fluid" alt="">
+                                </a>
+
+                                <div class="news-category-block">
+                                    {% for tag in newsObj.tags.all %}
+                                    <a href="#" class="category-block-link">
+                                        {{ tag }}
+                                    </a>
+                                     {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="news-block-info">
+                                <div class="d-flex mt-2">
+                                    <div class="news-block-date">
+                                        <p>
+                                            <i class="bi-calendar4 custom-icon me-1"></i>
+                                            {{ relatednews.datetime }}
+                                        </p>
+                                    </div>
+
+                                    <div class="news-block-author mx-5">
+                                        <p>
+                                            <i class="bi-person custom-icon me-1"></i>
+                                            {{ relatednews.news_author_name }}
+                                        </p>
+                                    </div>
+
+                                    <div class="news-block-comment">
+                                        <p>
+                                            <i class="bi-chat-left custom-icon me-1"></i>
+                                            24 Comments
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="news-block-title mb-2">
+                                    <h4><a href="{% url 'news-details' relatednews.pk %}" class="news-block-title-link">{{ relatednews.news_title }}</a></h4>
+                                </div>
+
+                                <div class="news-block-body">
+                                    <p>{{ relatednews.get_short_desc }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include 'footer.html' %}
+
+{% endblock %}

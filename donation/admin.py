@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 from donation.models import Menu, Submenu, Slider, Charity, About, AboutOurMissionList, AboutSectionMember, Cause, \
-    Volunteer, VolunteerMember, NewsCategory, Tag, AddNews
+    Volunteer, VolunteerMember, NewsCategory, Tag, AddNews, Newsletter, HappyCustomer, GetInTouch, Contact, \
+    WebsiteSetting, AddDonationAmount, AddDonationPaymentMethod, Donation, Comment
 
 # Register your models here.
 admin.site.register(Menu)
@@ -17,3 +18,12 @@ admin.site.register(VolunteerMember)
 admin.site.register(NewsCategory)
 admin.site.register(Tag)
 admin.site.register(AddNews)
+admin.site.register(Newsletter)
+admin.site.register(HappyCustomer)
+admin.site.register(GetInTouch)
+admin.site.register(Contact)
+admin.site.register(WebsiteSetting)
+admin.site.register(AddDonationAmount)
+admin.site.register(AddDonationPaymentMethod)
+admin.site.register(Donation)
+admin.site.register(Comment)

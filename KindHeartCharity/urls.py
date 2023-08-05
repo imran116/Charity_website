@@ -19,7 +19,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from donation.views import Register, Login, Logout
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('auth/register/', Register.as_view(), name='register'),
+    path('auth/login/', Login.as_view(), name='login'),
+    path('auth/logout/', Logout.as_view(), name='logout'),
     path('', include('donation.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

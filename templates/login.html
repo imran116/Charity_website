@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login and Registration Form</title>
+    {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/login_reg_style.css' %}">
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <h2>Login</h2>
+      <form id="login-form" method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+        <input type="text" placeholder="Username" name="username" required>
+        <input type="password" placeholder="Password" name="password" required>
+        <button type="submit" style="margin-bottom: 20px">Login</button>
+          {% for message in messages %}
+          <p>{{ message }}</p>
+          {% endfor %}
+         <a href="{% url 'register' %} " style="text-decoration: none;margin-left: 5px; color: black;">Register Here.</a>
+      </form>
+    </div>
+
+  </div>
+</body>
+</html>
