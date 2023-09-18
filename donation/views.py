@@ -156,7 +156,7 @@ class NewsLetterView(View):
             messages.success(request, "Subscribe Complete.")
             return redirect('home')
         else:
-            messages.error(request, "Try Again.f")
+            messages.error(request, "Try Again Or use different Email")
             return redirect('home')
 
 
@@ -316,4 +316,36 @@ class CommentView(View):
 
         return redirect(f"/news-details/{news_id}/")
 
+
 # comment section end
+
+
+# search news section start
+
+def search_news(request):
+    menus = Menu.objects.filter(is_active=True, is_display=True, is_dropdown_menu=False)
+    submenus = Menu.objects.filter(is_active=True, is_display=True, is_dropdown_menu=True)
+    website_settings = WebsiteSetting.objects.get()
+    if request.method == 'GET':
+        form = forms.NewsSearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['searchQuery']
+            search_results = AddNews.objects.filter(news_title__contains=query)
+            if search_results.exists():
+                messages.success(request, f"{search_results.count()} results found.")
+            else:
+                messages.error(request, "Do not found any related news!")
+
+            return render(request, 'search_result.html', {'results': search_results,
+                                                          'query': query,
+                                                          'website_settings': website_settings,
+                                                          'menus': menus,
+                                                          'submenus': submenus,
+                                                          })
+        else:
+            messages.error(request, "Invalid data!")
+    else:
+        form = forms.NewsSearchForm()
+    return render(request, 'index.html')
+
+# search news section end

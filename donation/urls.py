@@ -14,5 +14,7 @@ urlpatterns = [
     path('donation/', views.donation_view, name='donation'),
     path('donation/payment/', views.DonationPayment.as_view(), name='donation-payment'),
     path('comment/<int:news_id>/', views.CommentView.as_view(), name='comment'),
+    path('search/', views.search_news, name='search_news'),
+    # path('search/', views.search, name='search'),
 
 ]

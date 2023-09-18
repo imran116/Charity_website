@@ -39,3 +39,7 @@ class CommentForm(forms.ModelForm):
         fields = ('comment',)
 
 
+class NewsSearchForm(forms.Form):
+    searchQuery = forms.CharField(max_length=100)
+
+

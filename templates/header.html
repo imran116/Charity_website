@@ -1,61 +1,61 @@
 <header class="site-header">
-        <div class="container">
-            <div class="row">
+    <div class="container">
+        <div class="row">
 
-                <div class="col-lg-8 col-12 d-flex flex-wrap">
-                    <p class="d-flex me-4 mb-0">
-                        <i class="bi-geo-alt me-2"></i>
-                        {{ website_settings.address }}
-                    </p>
+            <div class="col-lg-8 col-12 d-flex flex-wrap">
+                <p class="d-flex me-4 mb-0">
+                    <i class="bi-geo-alt me-2"></i>
+                    {{ website_settings.address }}
+                </p>
 
-                    <p class="d-flex mb-0">
-                        <i class="bi-envelope me-2"></i>
+                <p class="d-flex mb-0">
+                    <i class="bi-envelope me-2"></i>
 
-                        <a href="">
-                            {{ website_settings.email }}
-                        </a>
-                    </p>
-                </div>
+                    <a href="">
+                        {{ website_settings.email }}
+                    </a>
+                </p>
+            </div>
 
-                <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
-                    <ul class="social-icon">
+            <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
+                <ul class="social-icon">
+                    <li class="social-icon-item">
+                        <a href="{{ website_settings.twitter_link }}" class="social-icon-link bi-twitter"></a>
+                    </li>
+
+                    <li class="social-icon-item">
+                        <a href="{{ website_settings.facebook_link }}" class="social-icon-link bi-facebook"></a>
+                    </li>
+
+                    <li class="social-icon-item">
+                        <a href="{{ website_settings.instagram_link }}" class="social-icon-link bi-instagram"></a>
+                    </li>
+
+                    <li class="social-icon-item">
+                        <a href="{{ website_settings.youtube_link }}" class="social-icon-link bi-youtube"></a>
+                    </li>
+
+                    <li class="social-icon-item">
+                        <a href="" class="social-icon-link bi-whatsapp"></a>
+                    </li>
+                    <br>
+                    {% if request.user.is_authenticated %}
                         <li class="social-icon-item">
-                            <a href="{{ website_settings.twitter_link }}" class="social-icon-link bi-twitter"></a>
+                            <p class="nav-link" style="margin-right: 15px">Welcome, {{ request.user.username }}</p>
                         </li>
-
                         <li class="social-icon-item">
-                            <a href="{{ website_settings.facebook_link }}" class="social-icon-link bi-facebook"></a>
-                        </li>
-
-                        <li class="social-icon-item">
-                            <a href="{{ website_settings.instagram_link }}" class="social-icon-link bi-instagram"></a>
-                        </li>
-
-                        <li class="social-icon-item">
-                            <a href="{{ website_settings.youtube_link }}" class="social-icon-link bi-youtube"></a>
-                        </li>
-
-                        <li class="social-icon-item">
-                            <a href="" class="social-icon-link bi-whatsapp"></a>
-                        </li>
-                        <br>
-                        {% if request.user.is_authenticated %}
-                            <li class="social-icon-item">
-                                <p class="nav-link"style="margin-right: 15px">Welcome, {{ request.user.username }}</p>
-                        </li>
-                            <li class="social-icon-item">
                             <a href="{% url 'logout' %}" class="nav-link" style="margin-right: 15px">Logout</a>
                         </li>
 
-                        {% else %}
+                    {% else %}
                         <li class="social-icon-item">
                             <a href="{% url 'login' %}" class="nav-link" style="margin-right: 30px">Login</a>
                         </li>
 
-                        {% endif %}
-                    </ul>
-                </div>
-
+                    {% endif %}
+                </ul>
             </div>
+
         </div>
-    </header>
+    </div>
+</header>

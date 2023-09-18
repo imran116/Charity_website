@@ -2,8 +2,8 @@
 {% include 'base.html' %}
 {% block main-container %}
 
-        {% include 'header.html' %}
-{# nav bar start #}
+    {% include 'header.html' %}
+    {# nav bar start #}
     <nav class="navbar navbar-expand-lg bg-light shadow-lg">
         <div class="container">
             <a class="navbar-brand" href="/">
@@ -15,7 +15,7 @@
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -27,29 +27,31 @@
                     <li class="nav-item">
                         <a class="nav-link click-scroll" href="/">Home</a>
                         {% for menu in menus %}
-                        <a class="nav-link click-scroll" href="#{{ menu.id_or_href }}">{{ menu.menu_name }}</a>
-                         {% endfor menus %}
+                            <a class="nav-link click-scroll" href="#{{ menu.id_or_href }}">{{ menu.menu_name }}</a>
+                        {% endfor menus %}
                     </li>
 
                     {% for submenu in submenus %}
-                    {% if submenu.get_submenu %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link click-scroll dropdown-toggle" href="#{{ submenu.id_or_href }}"
-                            id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">{{ submenu.menu_name }}</a>
+                        {% if submenu.get_submenu %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link click-scroll dropdown-toggle" href="#{{ submenu.id_or_href }}"
+                                   id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                                   aria-expanded="false">{{ submenu.menu_name }}</a>
 
 
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                    {% for submenu in submenu.get_submenu %}
-                              <li><a class="dropdown-item" href="{{ submenu.id_or_href }}">{{ submenu.sub_menu_name }}</a></li>
-                              {% endfor %}
-                        </ul>
+                                <ul class="dropdown-menu dropdown-menu-light"
+                                    aria-labelledby="navbarLightDropdownMenuLink">
+                                    {% for submenu in submenu.get_submenu %}
+                                        <li><a class="dropdown-item"
+                                               href="{{ submenu.id_or_href }}">{{ submenu.sub_menu_name }}</a></li>
+                                    {% endfor %}
+                                </ul>
 
-                    </li>
-                    {% endif %}
-                        {% endfor %}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
 
-                     <li class="nav-item ms-3">
+                    <li class="nav-item ms-3">
                         <a class="nav-link custom-btn custom-border-btn btn" href="{% url 'donation' %}">Donate</a>
                     </li>
                 </ul>
@@ -58,9 +60,9 @@
             </div>
         </div>
     </nav>
-{# nav bar end #}
+    {# nav bar end #}
 
-{# main section start   #}
+    {# main section start   #}
     <main>
 
         <section class="hero-section hero-section-full-height">
@@ -72,29 +74,29 @@
                             <div class="carousel-inner">
 
                                 {% for slider in sliders %}
-                                <div class="carousel-item active" >
-                                    <img src="{{ slider.slider_image.url }}"
-                                        class="carousel-image img-fluid" alt="...">
+                                    <div class="carousel-item active">
+                                        <img src="{{ slider.slider_image.url }}"
+                                             class="carousel-image img-fluid" alt="...">
 
-                                    <div class="carousel-caption d-flex flex-column justify-content-end">
-                                        <h1>{{ slider.slider_title }}</h1>
+                                        <div class="carousel-caption d-flex flex-column justify-content-end">
+                                            <h1>{{ slider.slider_title }}</h1>
 
-                                        <p>{{ slider.slider_sub_title }}</p>
+                                            <p>{{ slider.slider_sub_title }}</p>
+                                        </div>
                                     </div>
-                                </div>
                                 {% endfor sliders %}
 
 
                             </div>
 
                             <button class="carousel-control-prev" type="button" data-bs-target="#hero-slide"
-                                data-bs-slide="prev">
+                                    data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
 
                             <button class="carousel-control-next" type="button" data-bs-target="#hero-slide"
-                                data-bs-slide="next">
+                                    data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
@@ -115,15 +117,16 @@
                     </div>
 
                     {% for chartityObj in charity %}
-                    <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-                        <div class="featured-block d-flex justify-content-center align-items-center">
-                            <a href="donate.html" class="d-block">
-                                <img src="{{ chartityObj.charity_image.url }}" class="featured-block-image img-fluid" alt="">
+                        <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
+                            <div class="featured-block d-flex justify-content-center align-items-center">
+                                <a href="{% url 'donation' %}" class="d-block">
+                                    <img src="{{ chartityObj.charity_image.url }}"
+                                         class="featured-block-image img-fluid" alt="">
 
-                                <p class="featured-block-text"> <strong>{{ chartityObj.charity_title }}</strong></p>
-                            </a>
+                                    <p class="featured-block-text"><strong>{{ chartityObj.charity_title }}</strong></p>
+                                </a>
+                            </div>
                         </div>
-                    </div>
                     {% endfor %}
 
                 </div>
@@ -137,7 +140,7 @@
 
                     <div class="col-lg-6 col-12 mb-5 mb-lg-0">
                         <img src="{{ abouts.about_image.url }}"
-                            class="custom-text-box-image img-fluid" alt="">
+                             class="custom-text-box-image img-fluid" alt="">
                     </div>
 
                     <div class="col-lg-6 col-12">
@@ -158,12 +161,11 @@
 
                                     <ul class="custom-list mt-2">
                                         {% for mission_list in abouts_mission_list %}
-                                        <li class="custom-list-item d-flex">
-                                            <i class="bi-check custom-text-box-icon me-2"></i>
-                                            {{ mission_list.mission_name}}
-                                        </li>
+                                            <li class="custom-list-item d-flex">
+                                                <i class="bi-check custom-text-box-icon me-2"></i>
+                                                {{ mission_list.mission_name }}
+                                            </li>
                                         {% endfor %}
-
 
 
                                     </ul>
@@ -174,8 +176,9 @@
                                 <div class="custom-text-box d-flex flex-wrap d-lg-block mb-lg-0">
                                     <div class="counter-thumb">
                                         <div class="d-flex">
-                                            <span class="counter-number" data-from="1" data-to="{{ abouts.founded_year }}"
-                                                data-speed="1000">{{ abouts.founded_year }}</span>
+                                            <span class="counter-number" data-from="1"
+                                                  data-to="{{ abouts.founded_year }}"
+                                                  data-speed="1000">{{ abouts.founded_year }}</span>
                                             <span class="counter-number-text"></span>
                                         </div>
 
@@ -184,8 +187,9 @@
 
                                     <div class="counter-thumb mt-4">
                                         <div class="d-flex">
-                                            <span class="counter-number" data-from="1" data-to="{{ abouts.total_donations }}"
-                                                data-speed="1000"></span>
+                                            <span class="counter-number" data-from="1"
+                                                  data-to="{{ abouts.total_donations }}"
+                                                  data-speed="1000"></span>
                                             <span class="counter-number-text">{{ abouts.total_donations }}{{ abouts.total_donations_unit }}</span>
                                         </div>
 
@@ -207,7 +211,7 @@
 
                     <div class="col-lg-6 col-md-5 col-12">
                         <img src="{{ abouts_section_member.image.url }}"
-                            class="about-image ms-lg-auto bg-light shadow-lg img-fluid" alt="">
+                             class="about-image ms-lg-auto bg-light shadow-lg img-fluid" alt="">
                     </div>
 
                     <div class="col-lg-5 col-md-7 col-12">
@@ -216,20 +220,23 @@
 
                             <p class="text-muted mb-lg-4 mb-md-4">{{ abouts_section_member.designation }}</p>
 
-                            <p>{{ abouts_section_member.about}}</p>
+                            <p>{{ abouts_section_member.about }}</p>
 
 
                             <ul class="social-icon mt-4">
                                 <li class="social-icon-item">
-                                    <a href="{{ abouts_section_member.twitter_link }}" class="social-icon-link bi-twitter"></a>
+                                    <a href="{{ abouts_section_member.twitter_link }}"
+                                       class="social-icon-link bi-twitter"></a>
                                 </li>
 
                                 <li class="social-icon-item">
-                                    <a href="{{ abouts_section_member.facebook_link }}" class="social-icon-link bi-facebook"></a>
+                                    <a href="{{ abouts_section_member.facebook_link }}"
+                                       class="social-icon-link bi-facebook"></a>
                                 </li>
 
                                 <li class="social-icon-item">
-                                    <a href="{{ abouts_section_member.instagram_link }}" class="social-icon-link bi-instagram"></a>
+                                    <a href="{{ abouts_section_member.instagram_link }}"
+                                       class="social-icon-link bi-instagram"></a>
                                 </li>
                             </ul>
                         </div>
@@ -267,48 +274,44 @@
                     </div>
 
                     {% for cause in causes %}
-                    <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
-                        <div class="custom-block-wrap">
-                            <img src="{{ cause.image.url }}"
-                                class="custom-block-image img-fluid" alt="">
+                        <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
+                            <div class="custom-block-wrap">
+                                <img src="{{ cause.image.url }}"
+                                     class="custom-block-image img-fluid" alt="">
 
-                            <div class="custom-block">
-                                <div class="custom-block-body">
-                                    <h5 class="mb-3">{{ cause.title }}</h5>
+                                <div class="custom-block">
+                                    <div class="custom-block-body">
+                                        <h5 class="mb-3">{{ cause.title }}</h5>
 
-                                    <p>{{ cause.description }}</p>
-
-
-                        <div class="progress mt-4">
-                           <div class="progress-bar" role="progressbar"
-                               style="width: {{ cause.raised_amount_percentage }}%;"
-                               aria-valuenow="{{ cause.raised_amount_percentage }}"
-                               aria-valuemin="0" aria-valuemax="100">
-                           </div>
-                        </div>
-{#                                    <div class="progress mt-4">#}
-{#                                        <div class="progress-bar w-50" role="progressbar" aria-valuenow="50"#}
-{#                                            aria-valuemin="0" aria-valuemax="100"></div>#}
-{#                                    </div>#}
+                                        <p>{{ cause.description }}</p>
 
 
-                                    <div class="d-flex align-items-center my-2">
-                                        <p class="mb-0">
-                                            <strong>Raised:</strong>
-                                            ${{ cause.raised_amount }}
-                                        </p>
+                                        <div class="progress mt-4">
+                                            <div class="progress-bar" role="progressbar"
+                                                 style="width: {{ cause.raised_amount_percentage }}%;"
+                                                 aria-valuenow="{{ cause.raised_amount_percentage }}"
+                                                 aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        </div>
 
-                                        <p class="ms-auto mb-0">
-                                            <strong>Goal:</strong>
-                                            ${{ cause.goal_amount }}
-                                        </p>
+
+                                        <div class="d-flex align-items-center my-2">
+                                            <p class="mb-0">
+                                                <strong>Raised:</strong>
+                                                ${{ cause.raised_amount }}
+                                            </p>
+
+                                            <p class="ms-auto mb-0">
+                                                <strong>Goal:</strong>
+                                                ${{ cause.goal_amount }}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <a href="{% url 'donation' %}" class="custom-btn btn">Donate now</a>
+                                    <a href="{% url 'donation' %}" class="custom-btn btn">Donate now</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     {% endfor %}
                 </div>
             </div>
@@ -322,30 +325,32 @@
                     <div class="col-lg-6 col-12">
                         <h2 class="text-white mb-4">Volunteer</h2>
 
-                        <form class="custom-form volunteer-form mb-5 mb-lg-0" action="{% url 'volunteer' %}" method="post" role="form" enctype="multipart/form-data">
+                        <form class="custom-form volunteer-form mb-5 mb-lg-0" action="{% url 'volunteer' %}"
+                              method="post" role="form" enctype="multipart/form-data">
                             {% csrf_token %}
                             <h3 class="mb-4">Become a volunteer today</h3>
 
                             <div class="row">
                                 <div class="col-lg-6 col-12">
                                     <input type="text" name="volunteer_name" id="volunteer_name" class="form-control"
-                                        placeholder="Jack Doe" required>
+                                           placeholder="Jack Doe" required>
                                 </div>
 
                                 <div class="col-lg-6 col-12">
                                     <input type="email" name="volunteer_email" id="volunteer_email"
-                                        pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Jackdoe@gmail.com"
-                                        required>
+                                           pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Jackdoe@gmail.com"
+                                           required>
                                 </div>
 
                                 <div class="col-lg-6 col-12">
                                     <input type="text" name="volunteer_subject" id="volunteer_subject"
-                                        class="form-control" placeholder="Subject" required>
+                                           class="form-control" placeholder="Subject" required>
                                 </div>
 
                                 <div class="col-lg-6 col-12">
                                     <div class="input-group input-group-file">
-                                        <input type="file" class="form-control" id="volunteer_file" name="volunteer_file">
+                                        <input type="file" class="form-control" id="volunteer_file"
+                                               name="volunteer_file">
 
                                         <label class="input-group-text" for="volunteer_file">Upload your CV</label>
 
@@ -355,7 +360,7 @@
                             </div>
 
                             <textarea name="volunteer_message" rows="3" class="form-control" id="volunteer_message"
-                                placeholder="Comment (Optional)"></textarea>
+                                      placeholder="Comment (Optional)"></textarea>
 
                             <button type="submit" class="form-control">Submit</button>
                             {% for message in messages %}
@@ -364,18 +369,17 @@
                         </form>
                     </div>
                     {% for volunteer_member in volunteer_members %}
-                    <div class="col-lg-6 col-12">
-                        <img src="{{ volunteer_member.image.url }}"
-                            class="volunteer-image img-fluid" alt="">
+                        <div class="col-lg-6 col-12">
+                            <img src="{{ volunteer_member.image.url }}"
+                                 class="volunteer-image img-fluid" alt="">
 
-                        <div class="custom-block-body text-center">
-                            <h4 class="text-white mt-lg-3 mb-lg-3">{{ volunteer_member.name }}</h4>
-+
-                            <p class="text-white">{{ volunteer_member.about }}</p>
+                            <div class="custom-block-body text-center">
+                                <h4 class="text-white mt-lg-3 mb-lg-3">{{ volunteer_member.name }}</h4>
+
+                                <p class="text-white">{{ volunteer_member.about }}</p>
+                            </div>
                         </div>
-                    </div>
                     {% endfor %}
-
 
 
                 </div>
@@ -392,131 +396,190 @@
 
                     <div class="col-lg-7 col-12">
                         {% for news in add_news %}
-                        <div class="news-block">
-                            <div class="news-block-top">
-                                <a href="{% url 'news-details' news.pk %}">
-                                    <img src="{{ news.image_1.url }}"
-                                        class="news-image img-fluid" alt="">
-                                </a>
-
-                                <div class="news-category-block">
-                                    {% for tag in news.tags.all %}
-                                    <a href="{% url 'news-list_tag' tag.pk %}" class="category-block-link">
-                                        {{ tag }}
+                            <div class="news-block">
+                                <div class="news-block-top">
+                                    <a href="{% url 'news-details' news.pk %}">
+                                        <img src="{{ news.image_1.url }}"
+                                             class="news-image img-fluid" alt="">
                                     </a>
-                                    {% endfor %}
+
+                                    <div class="news-category-block">
+                                        {% for tag in news.tags.all %}
+                                            <a href="{% url 'news-list_tag' tag.pk %}" class="category-block-link">
+                                                {{ tag }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="news-block-info">
+                                    <div class="d-flex mt-2">
+                                        <div class="news-block-date">
+                                            <p>
+                                                <i class="bi-calendar4 custom-icon me-1"></i>
+                                                {{ news.datetime }}
+                                            </p>
+                                        </div>
+
+                                        <div class="news-block-author mx-5">
+                                            <p>
+                                                <i class="bi-person custom-icon me-1"></i>
+                                                {{ news.news_author_name }}
+                                            </p>
+                                        </div>
+
+                                        <div class="news-block-comment">
+                                            <p>
+                                                <i class="bi-chat-left custom-icon me-1"></i>
+                                                {{ news.get_comment.count }}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="news-block-title mb-2">
+                                        <h4><a href="{% url 'news-details' news.pk %}"
+                                               class="news-block-title-link">{{ news.news_title }}</a></h4>
+                                    </div>
+
+                                    <div class="news-block-body">
+                                        <p>{{ news.get_short_desc }}</p>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="news-block-info">
-                                <div class="d-flex mt-2">
-                                    <div class="news-block-date">
-                                        <p>
-                                            <i class="bi-calendar4 custom-icon me-1"></i>
-                                            {{ news.datetime }}
-                                        </p>
-                                    </div>
-
-                                    <div class="news-block-author mx-5">
-                                        <p>
-                                            <i class="bi-person custom-icon me-1"></i>
-                                            {{ news.news_author_name }}
-                                        </p>
-                                    </div>
-
-                                    <div class="news-block-comment">
-                                        <p>
-                                            <i class="bi-chat-left custom-icon me-1"></i>
-                                            {{ news.get_comment.count }}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="news-block-title mb-2">
-                                    <h4><a href="{% url 'news-details' news.pk %}" class="news-block-title-link">{{ news.news_title }}</a></h4>
-                                </div>
-
-                                <div class="news-block-body">
-                                    <p>{{ news.get_short_desc }}</p>
-                                </div>
-                            </div>
-                        </div>
                         {% endfor %}
+
+
+                        {% if results %}
+                            {% for news in results %}
+                                <div class="news-block">
+
+                                    <div class="news-block-top">
+                                        <a href="{% url 'news-details' news.pk %}">
+                                            <img src="{{ news.image_1.url }}"
+                                                 class="news-image img-fluid" alt="">
+                                        </a>
+
+                                        <div class="news-category-block">
+                                            {% for tag in news.tags.all %}
+                                                <a href="{% url 'news-list_tag' tag.pk %}" class="category-block-link">
+                                                    {{ tag }}
+                                                </a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="news-block-info">
+                                        <div class="d-flex mt-2">
+                                            <div class="news-block-date">
+                                                <p>
+                                                    <i class="bi-calendar4 custom-icon me-1"></i>
+                                                    {{ news.datetime }}
+                                                </p>
+                                            </div>
+
+                                            <div class="news-block-author mx-5">
+                                                <p>
+                                                    <i class="bi-person custom-icon me-1"></i>
+                                                    {{ news.news_author_name }}
+                                                </p>
+                                            </div>
+
+                                            <div class="news-block-comment">
+                                                <p>
+                                                    <i class="bi-chat-left custom-icon me-1"></i>
+                                                    {{ news.get_comment.count }}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="news-block-title mb-2">
+                                            <h4><a href="{% url 'news-details' news.pk %}"
+                                                   class="news-block-title-link">{{ news.news_title }}</a></h4>
+                                        </div>
+
+                                        <div class="news-block-body">
+                                            <p>{{ news.get_short_desc }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
 
                     </div>
 
                     <div class="col-lg-4 col-12 mx-auto">
-                        <form class="custom-form search-form" action="#" method="post" role="form">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
 
+                        <form class="custom-form search-form" action="{% url 'search_news' %}" method="get" role="form">
+                            <input class="form-control" type="search" name="searchQuery" placeholder="Search"
+                                   aria-label="Search" requiredF>
                             <button type="submit" class="form-control">
                                 <i class="bi-search"></i>
                             </button>
                         </form>
 
+
                         <h5 class="mt-5 mb-3">Recent news</h5>
 
+                        {% for recent_news in add_news %}
+                            {% if recent_news.get_recent_news %}
+                                <div class="news-block news-block-two-col d-flex mt-4">
+                                    <div class="news-block-two-col-image-wrap">
+                                        <a href="{% url 'news-details' recent_news.pk %}">
+                                            <img src="{{ recent_news.image_1.url }}"
+                                                 class="news-image img-fluid" alt="">
+                                        </a>
+                                    </div>
 
+                                    <div class="news-block-two-col-info">
+                                        <div class="news-block-title mb-2">
+                                            <h6><a href="{% url 'news-details' recent_news.pk %}"
+                                                   class="news-block-title-link">{{ recent_news.news_title }}</a>
+                                            </h6>
+                                        </div>
 
-                           {% for recent_news in add_news %}
-                               {% if recent_news.get_recent_news %}
-                        <div class="news-block news-block-two-col d-flex mt-4">
-                            <div class="news-block-two-col-image-wrap">
-                                <a href="{% url 'news-details' recent_news.pk %}">
-                                    <img src="{{ recent_news.image_1.url }}"
-                                        class="news-image img-fluid" alt="">
-                                </a>
-                            </div>
-
-                            <div class="news-block-two-col-info">
-                                <div class="news-block-title mb-2">
-                                    <h6><a href="{% url 'news-details' recent_news.pk %}" class="news-block-title-link">{{ recent_news.news_title }}</a>
-                                    </h6>
+                                        <div class="news-block-date">
+                                            <p>
+                                                <i class="bi-calendar4 custom-icon me-1"></i>
+                                                {{ recent_news.datetime }}
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="news-block-date">
-                                    <p>
-                                        <i class="bi-calendar4 custom-icon me-1"></i>
-                                        {{ recent_news.datetime }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                               {% endif %}
-                           {% endfor %}
+                            {% endif %}
+                        {% endfor %}
 
 
                         <div class="category-block d-flex flex-column">
                             <h5 class="mb-3">Categories</h5>
 
                             {% for category in news_category %}
-                            <a href="{% url 'news-list' category.pk %}" class="category-block-link">
-                                {{ category.category_name }}
-                                <span class="badge">{{ category.addnews_set.count }}</span>
-                            </a>
+                                <a href="{% url 'news-list' category.pk %}" class="category-block-link">
+                                    {{ category.category_name }}
+                                    <span class="badge">{{ category.addnews_set.count }}</span>
+                                </a>
                             {% endfor %}
-
 
 
                         </div>
 
                         <div class="tags-block">
                             <h5 class="mb-3">Tags</h5>
-                              {% for tags in news_tags %}
-                            <a href="{% url 'news-list_tag' tags.pk %}" class="tags-block-link">
-                                {{ tags.tag_name }}
-                            </a>
-                              {% endfor %}
+                            {% for tags in news_tags %}
+                                <a href="{% url 'news-list_tag' tags.pk %}" class="tags-block-link">
+                                    {{ tags.tag_name }}
+                                </a>
+                            {% endfor %}
 
                         </div>
 
 
-                        <form class="custom-form subscribe-form" action="{% url 'news-letter' %}" method="post" role="form">
+                        <form class="custom-form subscribe-form" action="{% url 'news-letter' %}" method="post"
+                              role="form">
                             {% csrf_token %}
                             <h5 class="mb-4">Newsletter Form</h5>
 
                             <input type="email" name="news_letter_email" id="news_letter_email" pattern="[^ @]*@[^ @]*"
-                                class="form-control" placeholder="Email Address" required>
+                                   class="form-control" placeholder="Email Address" required>
 
                             <div class="col-lg-12 col-12">
                                 <button type="submit" class="form-control">Subscribe</button>
@@ -543,22 +606,26 @@
                         <div id="testimonial-carousel" class="carousel carousel-fade slide" data-bs-ride="carousel">
 
                             <div class="carousel-inner">
-                            {% for happy_customer in happy_customers %}
-                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                    <div class="carousel-caption">
-                                        <h4 class="carousel-title">{{ happy_customer.customer_quote }}</h4>
+                                {% for happy_customer in happy_customers %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="carousel-caption">
+                                            <h4 class="carousel-title">{{ happy_customer.customer_quote }}</h4>
 
-                                        <small class="carousel-name"><span class="carousel-name-title"></span>{{ happy_customer.customer_name }}</small>
+                                            <small class="carousel-name"><span
+                                                    class="carousel-name-title"></span>{{ happy_customer.customer_name }}
+                                            </small>
+                                        </div>
                                     </div>
-                                </div>
-                            {% endfor %}
+                                {% endfor %}
 
                                 <ol class="carousel-indicators">
-                                {% for happy_customer in happy_customers %}
-                                    <li data-bs-target="#testimonial-carousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}>
-                                        <img src="{{ happy_customer.customer_image.url}}"
-                                            class="img-fluid rounded-circle avatar-image" alt="avatar">
-                                    </li>
+                                    {% for happy_customer in happy_customers %}
+                                        <li data-bs-target="#testimonial-carousel"
+                                            data-bs-slide-to="{{ forloop.counter0 }}"
+                                            {% if forloop.first %}class="active"{% endif %}>
+                                            <img src="{{ happy_customer.customer_image.url }}"
+                                                 class="img-fluid rounded-circle avatar-image" alt="avatar">
+                                        </li>
                                     {% endfor %}
                                 </ol>
 
@@ -582,7 +649,7 @@
 
                             <div class="contact-image-wrap d-flex flex-wrap">
                                 <img src="{{ get_in_touch.member_image.url }}"
-                                    class="img-fluid avatar-image" alt="">
+                                     class="img-fluid avatar-image" alt="">
 
                                 <div class="d-flex flex-column justify-content-center ms-3">
                                     <p class="mb-0">{{ get_in_touch.member_name }}</p>
@@ -619,7 +686,8 @@
                     </div>
 
                     <div class="col-lg-5 col-12 mx-auto">
-                        <form class="custom-form contact-form" action="{% url 'contact-form' %}" method="post" role="form">
+                        <form class="custom-form contact-form" action="{% url 'contact-form' %}" method="post"
+                              role="form">
                             {% csrf_token %}
                             <h2>Contact form</h2>
 
@@ -629,20 +697,20 @@
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <input type="text" name="first_name" id="first_name" class="form-control"
-                                        placeholder="Jack" required>
+                                           placeholder="Jack" required>
                                 </div>
 
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <input type="text" name="last_name" id="last_name" class="form-control"
-                                        placeholder="Doe" required>
+                                           placeholder="Doe" required>
                                 </div>
                             </div>
 
                             <input type="email" name="email" id="email" pattern="[^ @]*@[^ @]*" class="form-control"
-                                placeholder="Jackdoe@gmail.com" required>
+                                   placeholder="Jackdoe@gmail.com" required>
 
                             <textarea name="message" rows="5" class="form-control" id="message"
-                                placeholder="What can we help you?"></textarea>
+                                      placeholder="What can we help you?"></textarea>
 
                             <button type="submit" class="form-control">Send Message</button>
                             {% for message in messages %}
@@ -656,7 +724,7 @@
         </section>
 
     </main>
-{# main section end  #}
+    {# main section end  #}
     {% include 'footer.html' %}
 
 
